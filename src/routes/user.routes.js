@@ -5,6 +5,13 @@ import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router()
 
+router.route("/").get((req, res) =>{
+    res.status(200).json({
+        status: true,
+        message: "hello"
+    })
+})
+
 router.post("/register", 
     upload.fields([
         {
@@ -16,7 +23,8 @@ router.post("/register",
             maxCount: 1
         }
     ]),
-    registerUser);
+    registerUser
+);
 
 
 export default router

@@ -1,7 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from '../utils/ApiError.js'
 import { User } from "../models/user.modal.js";
-
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
@@ -17,13 +16,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
     // return response
 
 const registerUser = asyncHandler(async (req, res) => {
-    res.status(200).json({
-        message: "Success",
-        // receivedEmail: email,
-        bodyReceived: req.body
-    });
     const {email, fullName, username, password} = req.body
-    console.log("Dudaram Choudhary",email);
+    
+    console.log("Dudaram Choudhary", req.body);
 
     if(
         [fullName, email, username, password].some((field) => field?.trim() === "")
@@ -31,7 +26,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "All fields are required")
     }
 
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{ username }, { email }]
     })
 
@@ -72,7 +67,8 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     return res.status(201).json(
-        new ApiResponse(200, createdUser, "User registerd successfully")
+        new ApiResponse(200, createdUser, "User registerd successully")
     )
 });
+
 export { registerUser };
